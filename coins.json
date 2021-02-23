@@ -1543,5 +1543,28 @@
       "clientPublic": "https://bsc-dataseed1.binance.org",
       "clientDocs": "https://eth.wiki/json-rpc/API"
     }
+  },
+  {
+    "id": "claniakea",
+    "name": "Laniakea",
+    "coinId": 1,
+    "symbol": "NIN",
+    "decimals": 6,
+    "blockchain": "Cosmos",
+    "derivationPath": "m/44'/1'/0'/0/0",
+    "curve": "secp256k1",
+    "publicKeyType": "secp256k1",
+    "hrp": "cl",
+    "explorer": {
+      "url": "https://scan.laniakea.network",
+      "txPath": "/txs/",
+      "accountPath": "/account/"
+    },
+    "info": {
+      "url": "https://laniakea.network",
+      "client": "https://github.com/cosmos/cosmos-sdk",
+      "clientPublic": "https://rpc.laniakea.network",
+      "clientDocs": "https://cosmos.network/rpc"
+    }
   }
 ]

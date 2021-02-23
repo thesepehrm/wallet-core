@@ -124,6 +124,7 @@ CoinEntry* coinDispatcher(TWCoinType coinType) {
         case TWCoinTypeCosmos: entry = &cosmosDP; break;
         case TWCoinTypeKava: entry = &cosmosDP; break;
         case TWCoinTypeTerra: entry = &cosmosDP; break;
+        case TWCoinTypeCLaniakea: entry = &cosmosDP; break;
         case TWCoinTypeBandChain: entry = &cosmosDP; break;
         case TWCoinTypeElrond: entry = &elrondDP; break;
         case TWCoinTypeEOS: entry = &eosDP; break;

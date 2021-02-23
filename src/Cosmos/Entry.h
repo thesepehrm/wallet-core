@@ -19,6 +19,7 @@ public:
             TWCoinTypeCosmos,
             TWCoinTypeKava,
             TWCoinTypeTerra,
+            TWCoinTypeCLaniakea,
             TWCoinTypeBandChain,
         };
     }
