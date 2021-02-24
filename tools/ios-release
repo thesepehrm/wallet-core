@@ -53,7 +53,7 @@ puts "final download url: #{download_url}"
 puts 'Publishing...'
 podspec = <<-PODSPEC
 Pod::Spec.new do |s|
-  s.name         = 'TrustWalletCore'
+  s.name         = 'DTrustWalletCore'
   s.version      = '#{version}'
   s.summary      = 'Forked trust wallet core data structures and algorithms with laniakea support'
   s.homepage     = 'https://github.com/thesepehrm/wallet-core'
