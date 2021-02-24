@@ -6,9 +6,12 @@
 set -e
 
 BUILD_FOLDER_DEVICE="build/ios-dev"
-BUILD_FOLDER_SIMULATOR="build/ios-sim"
+BUILD_FOLDER_SIMULATOR64="build/ios-sim-x86_64"
+BUILD_FOLDER_SIMULATORARM64="build/ios-sim-arm64"
 BUILD_FOLDER_CATALYST="build/ios-mac-catalyst"
+BUILD_FOLDER_OS64COMBINED="build/ios"
 TARGETS="TrezorCrypto protobuf TrustWalletCore"
+
 
 function buildDevices() {
     echo -e "\n\nBuilding for iOS Device..."
@@ -20,14 +23,25 @@ function buildDevices() {
     make -C "$BUILD_FOLDER_DEVICE" $TARGETS
 }
 
-function buildSimulators() {
-    echo -e "\nBuilding for iOS Simulator..."
-    mkdir -p "$BUILD_FOLDER_SIMULATOR"
-    cmake -H. -B "$BUILD_FOLDER_SIMULATOR" -DCMAKE_TOOLCHAIN_FILE=cmake/ios.toolchain.cmake \
+
+function buildSimulators64() {
+    echo -e "\nBuilding for iOS Simulator(x86_64)..."
+    mkdir -p "$BUILD_FOLDER_SIMULATOR64"
+    cmake -H. -B "$BUILD_FOLDER_SIMULATOR64" -DCMAKE_TOOLCHAIN_FILE=cmake/ios.toolchain.cmake \
                                            -DPLATFORM=SIMULATOR64 \
                                            -DDEPLOYMENT_TARGET=12.0 \
                                            -DCMAKE_BUILD_TYPE=Release
-    make -C "$BUILD_FOLDER_SIMULATOR" $TARGETS
+    make -C "$BUILD_FOLDER_SIMULATOR64" $TARGETS
+}
+
+function buildSimulatorsArm64() {
+    echo -e "\nBuilding for iOS Simulator(arm64)..."
+    mkdir -p "$BUILD_FOLDER_SIMULATORARM64"
+    cmake -H. -B "$BUILD_FOLDER_SIMULATORARM64" -DCMAKE_TOOLCHAIN_FILE=cmake/ios.toolchain.cmake \
+                                           -DPLATFORM=SIMULATORARM64 \
+                                           -DDEPLOYMENT_TARGET=12.0 \
+                                           -DCMAKE_BUILD_TYPE=Release
+    make -C "$BUILD_FOLDER_SIMULATORARM64" $TARGETS
 }
 
 function buildCatalyst() {
@@ -49,18 +63,30 @@ function buildCatalyst() {
     make -C "$BUILD_FOLDER_CATALYST" $TARGETS
 }
 
+function buildCombined() {
+    echo -e "\nBuilding for iOS Simulator and Device"
+    mkdir -p "$BUILD_FOLDER_OS64COMBINED"
+    cmake . -G Xcode -B "$BUILD_FOLDER_OS64COMBINED" -DCMAKE_TOOLCHAIN_FILE=cmake/ios.toolchain.cmake \
+                                           -DPLATFORM=OS64COMBINED \
+                                           -DDEPLOYMENT_TARGET=12.0 \
+                                           -DCMAKE_BUILD_TYPE=Release
+    make -C "$BUILD_FOLDER_OS64COMBINED" $TARGETS
+}
+
 function fattenBinary() {
     echo -e "\n\nFattenning binary..."
     mkdir -p build/ios
-    xcrun lipo -create -output build/ios/libprotobuf.a "$BUILD_FOLDER_DEVICE"/libprotobuf.a "$BUILD_FOLDER_SIMULATOR"/libprotobuf.a
-    xcrun lipo -create -output build/ios/libTrezorCrypto.a "$BUILD_FOLDER_DEVICE"/trezor-crypto/libTrezorCrypto.a "$BUILD_FOLDER_SIMULATOR"/trezor-crypto/libTrezorCrypto.a
-    xcrun lipo -create -output build/ios/libTrustWalletCore.a "$BUILD_FOLDER_DEVICE"/libTrustWalletCore.a "$BUILD_FOLDER_SIMULATOR"/libTrustWalletCore.a
+    xcrun lipo -create -output build/ios/libprotobuf.a "$BUILD_FOLDER_DEVICE"/libprotobuf.a "$BUILD_FOLDER_SIMULATOR64"/libprotobuf.a 
+    xcrun lipo -create -output build/ios/libTrezorCrypto.a "$BUILD_FOLDER_DEVICE"/trezor-crypto/libTrezorCrypto.a "$BUILD_FOLDER_SIMULATOR64"/trezor-crypto/libTrezorCrypto.a 
+    xcrun lipo -create -output build/ios/libTrustWalletCore.a "$BUILD_FOLDER_DEVICE"/libTrustWalletCore.a "$BUILD_FOLDER_SIMULATOR64"/libTrustWalletCore.a
 }
 
 function main() {
     buildDevices
-    buildSimulators
+    buildSimulators64
+    buildSimulatorsArm64
     fattenBinary
+    #buildCombined
 }
 
 main
