@@ -12,7 +12,7 @@ version = ARGV[0] || `git describe --long --tags | cut -f 1 -d "-"`.strip
 puts "Processing version: #{version}"
 
 # Get release by tag
-release = `curl -u #{ENV['GITHUB_USER']}:#{ENV['GITHUB_TOKEN']} https://api.github.com/repos/trustwallet/wallet-core/releases/tags/#{version}`
+release = `curl https://api.github.com/repos/thesepehrm/wallet-core/releases/tags/#{version}`
 release_hash = JSON.parse(release)
 upload_url = release_hash['upload_url']
 puts "asset upload url: #{upload_url}"
@@ -55,10 +55,10 @@ podspec = <<-PODSPEC
 Pod::Spec.new do |s|
   s.name         = 'TrustWalletCore'
   s.version      = '#{version}'
-  s.summary      = 'Trust Wallet core data structures and algorithms.'
-  s.homepage     = 'https://github.com/trustwallet/wallet-core'
+  s.summary      = 'Forked trust wallet core data structures and algorithms with laniakea support'
+  s.homepage     = 'https://github.com/thesepehrm/wallet-core'
   s.license      = 'MIT'
-  s.authors      = { 'Alejandro Isaza' => 'al@isaza.ca' }
+  s.authors      = { 'Alejandro Isaza' => 'al@isaza.ca', 'Sepehr Mohammadi' => 'contact@thesepehrm.com' }
   s.module_name  = 'WalletCore'
   s.ios.deployment_target = '12.0'
   s.swift_version = '5.1'
