@@ -32,6 +32,7 @@ bool Entry::validateAddress(TWCoinType coin, const string& address, TW::byte p2p
 
         case TWCoinTypeDash:
         case TWCoinTypeDogecoin:
+        case TWCoinTypeBitcoinTestnet:
         case TWCoinTypeRavencoin:
         case TWCoinTypeZcoin:
         default:
@@ -68,6 +69,7 @@ string Entry::deriveAddress(TWCoinType coin, const PublicKey& publicKey, TW::byt
             return CashAddress(publicKey).string();
 
         case TWCoinTypeDash:
+        case TWCoinTypeBitcoinTestnet:
         case TWCoinTypeDogecoin:
         case TWCoinTypeMonacoin:
         case TWCoinTypeQtum:

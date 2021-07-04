@@ -119,6 +119,9 @@ CoinEntry* coinDispatcher(TWCoinType coinType) {
     case TWCoinTypeBitcoin:
         entry = &bitcoinDP;
         break;
+    case TWCoinTypeBitcoinTestnet:
+        entry = &bitcoinDP;
+        break;
     case TWCoinTypeBitcoinCash:
         entry = &bitcoinDP;
         break;
